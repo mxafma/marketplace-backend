@@ -34,4 +34,10 @@ public class Reunion {
 
     @Column(nullable = false)
     private String codigoSeguridad;
-} 
+
+    @Column(nullable = false)
+    private String lugarEncuentro;
+
+    @Column(nullable = false)
+    private String estado; // pendiente, confirmada, cancelada, completada
+}

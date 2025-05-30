@@ -39,5 +39,8 @@ public class Listing {
     @Column(nullable = false)
     private String categoria;
 
+
+    @Column(nullable = false)
+    private Long userId;
  
 }

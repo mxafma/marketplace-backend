@@ -1,5 +1,5 @@
 package com.example.listing.controller;
-
+import com.example.listing.repository.ListingRepository;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,15 +37,18 @@ public class ListingController {
     public Listing create(@RequestBody Listing listing) {
         return listingService.save(listing);
     }
-
     @PutMapping("/{id}")
     public Listing update(@PathVariable Long id, @RequestBody Listing listing) {
-        listing.setId(id);
+        listing.setId(id); 
         return listingService.save(listing);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         listingService.delete(id);
+    }
+    @GetMapping("/usuario/{userId}") //encuentra publicaciones por usuario
+    public List<Listing> getByUserId(@PathVariable Long userId) {
+        return listingService.findByUserId(userId);
     }
 }

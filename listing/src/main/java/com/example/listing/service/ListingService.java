@@ -30,4 +30,7 @@ public class ListingService {
     public void delete(Long id) {
         listingRepository.deleteById(id);
     }
+    public List<Listing> findByUserId(Long userId) {
+        return listingRepository.findByUserId(userId);
+    }
 }

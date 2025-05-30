@@ -23,7 +23,7 @@ public class NotificationService {
     // Crear una notificación
     public Notification createNotification(Notification notification) {
         notification.setTimestamp(LocalDateTime.now());
-        notification.setStatus("SENT");  // Asumimos que la notificación se envía con éxito.
+        notification.setStatus("SENT");  
         return notificationRepository.save(notification);
     }
 

@@ -13,11 +13,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Reunion")
+@Table(name = "Meeting")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reunion {
+public class Meeting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,8 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import com.meeting.cl.meeting.model.Reunion;
-import com.meeting.cl.meeting.repository.ReunionRepository;
+import com.meeting.cl.meeting.model.Meeting;
+import com.meeting.cl.meeting.repository.MeetingRepository;
 
 import net.datafaker.Faker;
 
@@ -18,7 +18,7 @@ import net.datafaker.Faker;
 public class MeetingDataloader implements CommandLineRunner {
 
     @Autowired
-    private ReunionRepository reunionRepository;
+    private MeetingRepository meetingRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -27,15 +27,15 @@ public class MeetingDataloader implements CommandLineRunner {
         String[] estados = {"pendiente", "confirmada", "cancelada", "completada"};
 
         for (int i = 0; i < 20; i++) {
-            Reunion reunion = new Reunion();
-            reunion.setUsuarioId((long) faker.number().numberBetween(1, 10));
-            reunion.setVendedorId((long) faker.number().numberBetween(1, 10));
-            reunion.setFecha(LocalDateTime.now().plusDays(faker.number().numberBetween(1, 30)));
-            reunion.setCodigoSeguridad(faker.regexify("SEC[0-9]{4}"));
-            reunion.setLugarEncuentro(faker.address().streetAddress());
-            reunion.setEstado(estados[random.nextInt(estados.length)]);
+            Meeting Meeting = new Meeting();
+            Meeting.setUsuarioId((long) faker.number().numberBetween(1, 10));
+            Meeting.setVendedorId((long) faker.number().numberBetween(1, 10));
+            Meeting.setFecha(LocalDateTime.now().plusDays(faker.number().numberBetween(1, 30)));
+            Meeting.setCodigoSeguridad(faker.regexify("SEC[0-9]{4}"));
+            Meeting.setLugarEncuentro(faker.address().streetAddress());
+            Meeting.setEstado(estados[random.nextInt(estados.length)]);
 
-            reunionRepository.save(reunion);
+            meetingRepository.save(Meeting);
         }
     }
 }

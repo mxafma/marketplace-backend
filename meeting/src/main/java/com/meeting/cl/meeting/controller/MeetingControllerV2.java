@@ -23,44 +23,44 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.meeting.cl.meeting.assemblers.ReunionModelAssembler;
-import com.meeting.cl.meeting.model.Reunion;
-import com.meeting.cl.meeting.service.ReunionService;
+import com.meeting.cl.meeting.assemblers.MeetingModelAssembler;
+import com.meeting.cl.meeting.model.Meeting;
+import com.meeting.cl.meeting.service.MeetingService;
 
 @RestController
 @RequestMapping("/api/v2/meetings")
-public class ReunionControllerV2 {
+public class MeetingControllerV2 {
 
     @Autowired
-    private ReunionService reunionService;
+    private MeetingService meetingService;
 
     @Autowired
-    private ReunionModelAssembler assembler;
+    private MeetingModelAssembler assembler;
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Reunion> getReunionById(@PathVariable Long id) {
-        Reunion reunion = reunionService.getReunionById(id)
+    public EntityModel<Meeting> getMeetingById(@PathVariable Long id) {
+        Meeting meeting = meetingService.getMeetingById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return assembler.toModel(reunion);
+        return assembler.toModel(meeting);
     }
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public CollectionModel<EntityModel<Reunion>> getAllReunionesV2() {
-        var reuniones = reunionService.getAllReuniones().stream()
+    public CollectionModel<EntityModel<Meeting>> getAllMeetingsV2() {
+        var meetings = meetingService.getAllMeetings().stream()
             .map(assembler::toModel)
             .collect(Collectors.toList());
 
         return CollectionModel.of(
-            reuniones,
-            linkTo(methodOn(ReunionControllerV2.class).getAllReunionesV2()).withSelfRel()
+            meetings,
+            linkTo(methodOn(MeetingControllerV2.class).getAllMeetingsV2()).withSelfRel()
         );
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<Reunion>> createReunion(@RequestBody Reunion reunion, UriComponentsBuilder uriBuilder) {
-        Reunion saved = reunionService.saveReunion(reunion);
+    public ResponseEntity<EntityModel<Meeting>> createMeeting(@RequestBody Meeting meeting, UriComponentsBuilder uriBuilder) {
+        Meeting saved = meetingService.saveMeeting(meeting);
 
-        EntityModel<Reunion> model = assembler.toModel(saved);
+        EntityModel<Meeting> model = assembler.toModel(saved);
 
         return ResponseEntity
             .created(uriBuilder.path("/api/v2/meetings/{id}").buildAndExpand(saved.getId()).toUri())
@@ -68,46 +68,46 @@ public class ReunionControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Reunion> updateReunion(@PathVariable Long id, @RequestBody Reunion reunion) {
-        Reunion existing = reunionService.getReunionById(id)
+    public EntityModel<Meeting> updateMeeting(@PathVariable Long id, @RequestBody Meeting meeting) {
+        Meeting existing = meetingService.getMeetingById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         // Actualizar campos
-        existing.setUsuarioId(reunion.getUsuarioId());
-        existing.setVendedorId(reunion.getVendedorId());
-        existing.setFecha(reunion.getFecha());
-        existing.setCodigoSeguridad(reunion.getCodigoSeguridad());
-        existing.setLugarEncuentro(reunion.getLugarEncuentro());
-        existing.setEstado(reunion.getEstado());
+        existing.setUsuarioId(meeting.getUsuarioId());
+        existing.setVendedorId(meeting.getVendedorId());
+        existing.setFecha(meeting.getFecha());
+        existing.setCodigoSeguridad(meeting.getCodigoSeguridad());
+        existing.setLugarEncuentro(meeting.getLugarEncuentro());
+        existing.setEstado(meeting.getEstado());
 
-        Reunion updated = reunionService.saveReunion(existing);
+        Meeting updated = meetingService.saveMeeting(existing);
         return assembler.toModel(updated);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReunion(@PathVariable Long id) {
-        Reunion reunion = reunionService.getReunionById(id)
+    public void deleteMeeting(@PathVariable Long id) {
+        Meeting meeting = meetingService.getMeetingById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        reunionService.deleteReunion(id);
+        meetingService.deleteMeeting(id);
     }
 
     @GetMapping(value = "/usuario/{usuarioId}", produces = MediaTypes.HAL_JSON_VALUE)
-    public CollectionModel<EntityModel<Reunion>> getReunionesByUsuarioId(@PathVariable Long usuarioId) {
-        List<Reunion> reuniones = reunionService.getReunionsByUsuarioId(usuarioId);
+    public CollectionModel<EntityModel<Meeting>> getMeetingsByUsuarioId(@PathVariable Long usuarioId) {
+        List<Meeting> meetings = meetingService.getMeetingsByUsuarioId(usuarioId);
 
-        if (reuniones.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay reuniones para ese usuario");
+        if (meetings.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No hay meetings para ese usuario");
         }
 
-        List<EntityModel<Reunion>> models = reuniones.stream()
+        List<EntityModel<Meeting>> models = meetings.stream()
             .map(assembler::toModel)
             .toList();
 
         return CollectionModel.of(
             models,
-            linkTo(methodOn(ReunionControllerV2.class).getReunionesByUsuarioId(usuarioId)).withSelfRel()
+            linkTo(methodOn(MeetingControllerV2.class).getMeetingsByUsuarioId(usuarioId)).withSelfRel()
         );
     }
 }

@@ -13,30 +13,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Reunion")
+@Table(name = "Meeting")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reunion {
+public class Meeting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Identificador único de la reunión
 
     @Column(nullable = false)
-    private Long usuarioId;
+    private Long usuarioId; // Identificador del usuario comprador
+
+    @Column(nullable = false) 
+    private Long vendedorId; // Identificador del usuario vendedor
 
     @Column(nullable = false)
-    private Long vendedorId;
+    private LocalDateTime fecha; // Fecha y hora de la reunión
 
     @Column(nullable = false)
-    private LocalDateTime fecha;
+    private String codigoSeguridad; // Código de seguridad para la reunión
 
     @Column(nullable = false)
-    private String codigoSeguridad;
-
-    @Column(nullable = false)
-    private String lugarEncuentro;
+    private String lugarEncuentro; // Lugar de encuentro para la reunión (proximamente se usará otra entidad para manejar lugares)
 
     @Column(nullable = false)
     private String estado; // pendiente, confirmada, cancelada, completada

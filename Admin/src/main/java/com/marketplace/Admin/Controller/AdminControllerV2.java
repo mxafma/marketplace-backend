@@ -81,16 +81,15 @@ public class AdminControllerV2 {
         AdminUser existing = adminService.getAdminUserById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        //Actualizar campos
-        existing.setDescription(adminUser.getDescription());
-        existing.setEmail(adminUser.getEmail());
-        existing.setIdAdmin(adminUser.getIdAdmin());
-        existing.setPassword(adminUser.getPassword());
-        existing.setSubject(adminUser.getSubject());
+    // Actualizar solo los campos modificables
+    existing.setDescription(adminUser.getDescription());
+    existing.setEmail(adminUser.getEmail());
+    existing.setPassword(adminUser.getPassword());
+    existing.setSubject(adminUser.getSubject());
 
-        AdminUser update = adminService.createAdminUser(existing);
-        return assembler.toModel(update);
-    }
+    AdminUser update = adminService.createAdminUser(existing); // posiblemente deberías tener un método update, no "create"
+    return assembler.toModel(update);
+}
 
     // Eliminar un administrador2
     @DeleteMapping("/{id}")

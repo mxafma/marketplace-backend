@@ -71,7 +71,7 @@ public class AdminControllerV2 {
         EntityModel<AdminUser> model = assembler.toModel(saved);
 
         return ResponseEntity
-            .created(uriBuilder.path("/api/v2/listings/{id}").buildAndExpand(saved.getIdAdmin()).toUri())
+            .created(uriBuilder.path("/api/v2/admins/{id}").buildAndExpand(saved.getIdAdmin()).toUri())
             .body(model);
     }
 
